@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
 import BongTicket from '../components/bong_ticket'
+import ThemeToggle from '../components/theme_toggle'
+import { use_theme } from '../use_theme'
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 const POLL_INTERVAL_MS = 3000
 
 export default function BongPage() {
+  const { theme, toggle_theme } = use_theme()
   const [orders, set_orders] = useState([])
   const [error, set_error] = useState(null)
 
@@ -44,6 +47,7 @@ export default function BongPage() {
           </span>
         )}
         {error && <span className="bong-page__error">{error}</span>}
+        <ThemeToggle theme={theme} on_toggle={toggle_theme} />
       </header>
 
       <div className="bong-page__body">

@@ -3,8 +3,8 @@ export default function BurgerCard({ burger, selected, on_select }) {
     <button
       className={`burger-card${selected ? ' burger-card--selected' : ''}`}
       style={{
-        borderColor: selected ? burger.color : undefined,
-        backgroundColor: selected ? `${burger.color}1a` : undefined,
+        borderColor: burger.color,
+        backgroundColor: selected ? `${burger.color}22` : undefined,
       }}
       onClick={() => on_select(burger.id)}
       type="button"

@@ -23,6 +23,96 @@
   --transition: 180ms ease;
 }
 
+/* ============================================================
+   LIGHT THEME OVERRIDES
+   ============================================================ */
+[data-theme="light"] {
+  --bg:          #f5f2eb;
+  --bg-surface:  #ffffff;
+  --bg-input:    #ece9e0;
+  --text-primary:   #1a1816;
+  --text-secondary: #4a4438;
+  --text-muted:     #8a8070;
+  --yellow:  #f0c040;
+  --red:     #c0392b;
+  --green:   #219a52;
+  --border:  #d5d0c5;
+}
+
+/* In light mode the logo reads better in near-black */
+[data-theme="light"] .order-page__logo {
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .order-page__header {
+  background: linear-gradient(180deg, #ffffff 0%, #f5f2eb 100%);
+  border-bottom-color: #d5d0c5;
+}
+
+/* Flower row below the title — only in light mode */
+[data-theme="light"] .order-page__header::after {
+  content: '🌸   🌼   🌺   🌼   🌸';
+  display: block;
+  font-size: 18px;
+  letter-spacing: 6px;
+  margin-top: 10px;
+  opacity: 0.75;
+}
+
+/* Cards get colored borders always (matching the printed menu) */
+[data-theme="light"] .burger-card {
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+[data-theme="light"] .burger-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+/* Underline on burger name instead of left-bar, matching menu style */
+[data-theme="light"] .burger-card__name {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
+
+[data-theme="light"] .burger-card--selected .burger-card__name {
+  text-decoration-thickness: 3px;
+}
+
+[data-theme="light"] .bong-page__header {
+  background: linear-gradient(180deg, #ffffff 0%, #f5f2eb 100%);
+  border-bottom-color: #d5d0c5;
+}
+
+[data-theme="light"] .bong-page__title {
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .bong-page__header::after {
+  content: '🌸   🌼   🌺';
+  font-size: 16px;
+  letter-spacing: 4px;
+  opacity: 0.65;
+}
+
+[data-theme="light"] .bong-ticket {
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+[data-theme="light"] .confirmation {
+  background: rgba(245, 242, 235, 0.97);
+}
+
+[data-theme="light"] .confirmation__title {
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   END LIGHT THEME
+   ============================================================ */
+
 html, body, #root {
   height: 100%;
 }
@@ -42,6 +132,26 @@ button {
 }
 
 /* ============================================================
+   THEME TOGGLE
+   ============================================================ */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  line-height: 1;
+  transition: transform var(--transition), opacity var(--transition);
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.15);
+  opacity: 0.8;
+}
+
+/* ============================================================
    ORDER PAGE
    ============================================================ */
 .order-page {
@@ -52,7 +162,10 @@ button {
 .order-page__header {
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border);
-  padding: 24px 20px 20px;
+  padding: 20px 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   text-align: center;
 }
 
@@ -135,28 +248,29 @@ button {
    ============================================================ */
 .burger-card {
   background: var(--bg-surface);
-  border: 2px solid var(--border);
+  border-style: solid;
+  border-width: 1.5px;
   border-radius: var(--radius);
   padding: 14px 14px 16px;
   cursor: pointer;
   text-align: left;
   width: 100%;
   transition:
-    border-color var(--transition),
     background var(--transition),
     transform var(--transition),
-    box-shadow var(--transition);
+    box-shadow var(--transition),
+    border-width var(--transition);
 }
 
 .burger-card:hover {
-  border-color: #504a42;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 
 .burger-card--selected {
+  border-width: 3px;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
 }
 
 .burger-card__accent-bar {
