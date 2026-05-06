@@ -1,0 +1,17 @@
+# TODO: replace all occurrences of "my-app" with your project name
+
+name = "my-app-api"
+main = "worker/src/index.js"
+compatibility_date = "2025-01-01"
+
+[[d1_databases]]
+binding = "MY_APP_DB"
+database_name = "my-app-db"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+migrations_dir = "worker/migrations"
+
+# Uncomment if you need file storage (Cloudflare R2)
+# [[r2_buckets]]
+# binding = "MY_APP_FILES"
+# bucket_name = "my-app-files"
+# jurisdiction = "eu"
