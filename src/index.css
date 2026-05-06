@@ -389,6 +389,30 @@ button {
   font-weight: 500;
 }
 
+.bong-ticket__ingredients {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.bong-ticket__ingredients li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bong-ticket__ingredients li::before {
+  content: '·';
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
 .bong-ticket__time {
   font-size: 12px;
   color: var(--text-muted);

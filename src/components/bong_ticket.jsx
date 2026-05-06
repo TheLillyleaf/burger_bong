@@ -17,6 +17,13 @@ export default function BongTicket({ order, on_done }) {
       <span className="bong-ticket__order-number">Order #{order.id}</span>
       <span className="bong-ticket__name">{order.name}</span>
       <span className="bong-ticket__burger">{burger_data?.name ?? order.burger}</span>
+      {burger_data?.ingredients && (
+        <ul className="bong-ticket__ingredients">
+          {burger_data.ingredients.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      )}
       <span className="bong-ticket__time">{time_since(order.created_at)}</span>
       <button className="bong-ticket__done-btn" onClick={() => on_done(order.id)}>
         Klar ✓
