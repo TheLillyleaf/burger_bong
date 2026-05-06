@@ -3,9 +3,9 @@ main = "worker/src/index.js"
 compatibility_date = "2025-01-01"
 
 [[d1_databases]]
-binding = "BURGER_BONG_DB"
-database_name = "burger-bong-db"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+binding = "DB"
+database_name = "burger_bong_db"
+database_id = "4c624c7c-93d4-492e-9ec4-e6293942ed0a"
 migrations_dir = "worker/migrations"
 
 # Uncomment if you need file storage (Cloudflare R2)

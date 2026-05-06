@@ -1,57 +1,91 @@
-# cf-worker-react-template
+# Burger Bong 🍔
 
-Scaffolding template for React + Cloudflare Workers projects.
+A lightweight burger-ordering and kitchen-display app built for a private burger party. Guests order on their phones; the cook watches a live ticket board and marks orders done.
 
-**Stack:** React 19 + Vite — Cloudflare Workers + Hono — Cloudflare D1 (SQLite) — Cloudflare Pages
+**Stack:** React 19 + Vite — Cloudflare Workers (Hono) — Cloudflare D1 (SQLite) — Cloudflare Pages
 
 ---
 
-## Start a new project
+## How it works
 
-### 1. Copy the template
+| Route | Who uses it | What it does |
+|---|---|---|
+| `/order` | Guests (mobile) | Pick a name, choose a burger, submit |
+| `/bong`  | Cook (laptop/tablet) | See pending orders, mark them done |
 
-```bash
-cp -r cf-worker-react-template my-new-project
-cd my-new-project
+The bong page polls `/api/orders` every 3 seconds — no websockets needed at this scale.
+
+---
+
+## Project structure
+
+```
+burger_bong/
+├── src/
+│   ├── pages/
+│   │   ├── order_page.jsx     # Guest order flow
+│   │   └── bong_page.jsx      # Kitchen display with polling
+│   ├── components/
+│   │   ├── burger_card.jsx    # Selectable burger card
+│   │   ├── order_form.jsx     # Name input field
+│   │   └── bong_ticket.jsx    # Individual order ticket
+│   ├── data/
+│   │   └── menu.js            # Hardcoded menu (4 burgers)
+│   ├── App.jsx                # React Router setup
+│   ├── main.jsx               # Entry point
+│   └── index.css              # Global styles + design system
+├── worker/
+│   ├── src/
+│   │   ├── index.js           # Hono API (all routes)
+│   │   └── db.js              # D1 query helpers
+│   ├── migrations/
+│   │   └── 0001_schema.sql    # DB migration file
+│   └── schema.sql             # Standalone schema (for manual apply)
+├── public/
+│   └── _redirects             # SPA catch-all for Cloudflare Pages
+├── wrangler.toml              # Worker + D1 config
+├── vite.config.js             # Proxies /api → localhost:8787 in dev
+└── .github/workflows/
+    └── deploy.yml             # Auto-deploy on push to main
 ```
 
-### 2. Rename the app
+---
 
-Find and replace `my-app` with your project name across all files:
+## API
+
+All routes are under `/api`. The worker validates that `burger` is one of the four known IDs before persisting.
+
+| Method  | Route                    | Description                         |
+|---------|--------------------------|-------------------------------------|
+| `POST`  | `/api/orders`            | Create order `{ name, burger }`     |
+| `GET`   | `/api/orders`            | Get all pending orders (oldest first) |
+| `PATCH` | `/api/orders/:id/done`   | Mark an order as done               |
+
+---
+
+## Local development
+
+### 1. Create the D1 database
 
 ```bash
-grep -rl "my-app" . --include="*.json" --include="*.toml" --include="*.yml" --include="*.jsx" --include="*.js" | xargs sed -i 's/my-app/your-project-name/g'
+wrangler d1 create burger_bong_db
 ```
 
-### 3. Create the D1 database
+Copy the `database_id` from the output into `wrangler.toml`.
 
-```bash
-wrangler d1 create your-project-name-db
-```
-
-Copy the `database_id` from the output and paste it into `wrangler.toml`.
-
-### 4. Run the first migration
+### 2. Apply the schema
 
 ```bash
 npm run db:migrate:local
 ```
 
-### 5. Set the JWT secret (if using auth)
-
-Create `worker/.dev.vars` for local development:
-
-```
-JWT_SECRET=some-long-random-string
-```
-
-For production, set it via Wrangler:
+Or manually:
 
 ```bash
-wrangler secret put JWT_SECRET
+wrangler d1 execute burger_bong_db --local --file=worker/schema.sql
 ```
 
-### 6. Install and run
+### 3. Install and run
 
 ```bash
 npm install
@@ -61,40 +95,21 @@ npm run dev
 - Frontend: http://localhost:5173
 - Worker API: http://localhost:8787
 
----
-
-## Project structure
-
-```
-├── src/                        # React frontend
-│   ├── main.jsx
-│   └── App.jsx
-├── worker/
-│   ├── src/
-│   │   └── index.js            # Hono API entry point
-│   └── migrations/
-│       └── 0001_schema.sql     # Database schema
-├── public/
-│   └── _redirects              # SPA catch-all for Cloudflare Pages
-├── wrangler.toml               # Cloudflare Worker + D1 config
-├── vite.config.js              # Vite config (proxies /api to :8787)
-└── .github/workflows/
-    └── deploy.yml              # Auto-deploy to Cloudflare on push to main
-```
+Vite proxies all `/api` requests to the worker in development, so no CORS issues locally.
 
 ---
 
 ## Deploy
 
-### GitHub Actions (automatic)
+### GitHub Actions (automatic on push to `main`)
 
-Push to `main` and it deploys automatically. Requires these GitHub secrets:
+Required GitHub secrets:
 
 | Secret | Where to get it |
 |---|---|
-| `CLOUDFLARE_API_TOKEN` | Cloudflare dashboard → My Profile → API Tokens |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare → My Profile → API Tokens |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard → right sidebar |
-| `VITE_API_URL` | Your worker URL, e.g. `https://my-app-api.yourname.workers.dev` — leave empty if same domain |
+| `VITE_API_URL` | Your worker URL, e.g. `https://burger-bong-api.yourname.workers.dev` |
 
 ### Manual deploy
 
@@ -103,20 +118,26 @@ npm run build
 npm run deploy:worker
 ```
 
-### Run database migrations in production
+Deploy the frontend by connecting the GitHub repo to a Cloudflare Pages project (build command: `npm run build`, output directory: `dist`). Set `VITE_API_URL` as an environment variable in the Pages project settings.
+
+### Apply schema in production
 
 ```bash
-npm run db:migrate
+wrangler d1 execute burger_bong_db --file=worker/schema.sql
 ```
 
 ---
 
-## Adding file storage (R2)
+## Design decisions
 
-Uncomment the R2 section in `wrangler.toml`, then create the bucket:
+**No auth** — this is a private party app. Anyone with the URL can order or view the bong screen.
 
-```bash
-wrangler r2 bucket create your-project-name-files
-```
+**Polling over WebSockets** — the bong page fetches every 3 s. Simple, zero infrastructure overhead, perfectly adequate for a party.
 
-The bucket will be available in your worker as `context.env.MY_APP_FILES`.
+**Hardcoded menu** — the 4 burgers live in `src/data/menu.js`. No admin panel needed; changing the menu means editing one file and redeploying.
+
+**Single schema file** — `worker/schema.sql` can be applied directly with `wrangler d1 execute`. The `worker/migrations/` directory exists for compatibility with `wrangler d1 migrations apply` if needed later.
+
+**snake_case everywhere** — files, folders, JS variables, and CSS class suffixes all use snake_case for consistency.
+
+**`VITE_API_URL`** — set this to the full worker URL in production (e.g. `https://burger-bong-api.yourname.workers.dev`). Leave it empty or unset in local dev; Vite's proxy handles it.

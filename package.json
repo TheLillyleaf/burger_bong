@@ -9,8 +9,8 @@
     "dev": "concurrently -n \"worker,frontend\" -c \"cyan,green\" \"wrangler dev\" \"vite\"",
     "build": "vite build",
     "deploy:worker": "wrangler deploy",
-    "db:migrate:local": "wrangler d1 migrations apply burger-bong-db --local",
-    "db:migrate": "wrangler d1 migrations apply burger-bong-db",
+    "db:migrate:local": "wrangler d1 migrations apply burger_bong_db --local",
+    "db:migrate": "wrangler d1 migrations apply burger_bong_db",
     "lint": "eslint ."
   },
   "dependencies": {

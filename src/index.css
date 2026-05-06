@@ -1,0 +1,445 @@
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:          #1a1a18;
+  --bg-surface:  #242220;
+  --bg-input:    #2d2b28;
+  --text-primary:   #f0ead6;
+  --text-secondary: #b0a890;
+  --text-muted:     #706858;
+  --yellow:  #f0c040;
+  --red:     #c0392b;
+  --green:   #27ae60;
+  --border:  #38342e;
+  --radius:    14px;
+  --radius-sm:  8px;
+  --transition: 180ms ease;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ============================================================
+   ORDER PAGE
+   ============================================================ */
+.order-page {
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.order-page__header {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 20px 20px;
+  text-align: center;
+}
+
+.order-page__logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--yellow);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.order-page__subtitle {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.order-page__body {
+  padding: 28px 16px;
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.order-page__section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+/* ============================================================
+   NAME INPUT
+   ============================================================ */
+.name-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg-input);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 16px;
+  outline: none;
+  transition: border-color var(--transition);
+  font-family: inherit;
+}
+
+.name-input::placeholder {
+  color: var(--text-muted);
+}
+
+.name-input:focus {
+  border-color: var(--yellow);
+}
+
+/* ============================================================
+   BURGER GRID
+   ============================================================ */
+.burger-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 480px) {
+  .burger-grid {
+    gap: 16px;
+  }
+}
+
+/* ============================================================
+   BURGER CARD
+   ============================================================ */
+.burger-card {
+  background: var(--bg-surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 14px 16px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition:
+    border-color var(--transition),
+    background var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
+}
+
+.burger-card:hover {
+  border-color: #504a42;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+
+.burger-card--selected {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.burger-card__accent-bar {
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  margin-bottom: 12px;
+  opacity: 0.6;
+  transition: opacity var(--transition);
+}
+
+.burger-card--selected .burger-card__accent-bar {
+  opacity: 1;
+}
+
+.burger-card__name {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 4px;
+  transition: color var(--transition);
+}
+
+.burger-card__tagline {
+  font-style: italic;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.burger-card__ingredients {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.burger-card__ingredient {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  line-height: 1.4;
+}
+
+.burger-card__ingredient::before {
+  content: '·';
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   ORDER BUTTON
+   ============================================================ */
+.order-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--yellow);
+  color: #1a1a18;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.order-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.order-btn:not(:disabled):hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.order-btn:not(:disabled):active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ============================================================
+   CONFIRMATION OVERLAY
+   ============================================================ */
+.confirmation {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 26, 24, 0.97);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 100;
+  padding: 32px;
+  text-align: center;
+  animation: fade-scale-in 220ms ease;
+}
+
+.confirmation__emoji {
+  font-size: 72px;
+  line-height: 1;
+  display: block;
+  animation: bounce-in 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.confirmation__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--yellow);
+  line-height: 1.2;
+}
+
+.confirmation__subtitle {
+  color: var(--text-secondary);
+  font-size: 17px;
+}
+
+@keyframes fade-scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes bounce-in {
+  from { transform: scale(0.4); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* ============================================================
+   BONG PAGE
+   ============================================================ */
+.bong-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.bong-page__header {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.bong-page__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--yellow);
+  letter-spacing: -0.01em;
+  flex: 1;
+}
+
+.bong-page__count {
+  background: var(--red);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+}
+
+.bong-page__error {
+  font-size: 13px;
+  color: var(--red);
+}
+
+.bong-page__body {
+  padding: 24px;
+}
+
+/* ============================================================
+   TICKET GRID
+   ============================================================ */
+.ticket-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+/* ============================================================
+   BONG TICKET
+   ============================================================ */
+.bong-ticket {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-top-width: 4px;
+  border-radius: var(--radius);
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: slide-in 200ms ease;
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.bong-ticket__order-number {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+}
+
+.bong-ticket__name {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.bong-ticket__burger {
+  font-size: 15px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.bong-ticket__time {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.bong-ticket__done-btn {
+  margin-top: 10px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1.5px solid var(--green);
+  color: var(--green);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition:
+    background var(--transition),
+    color var(--transition);
+}
+
+.bong-ticket__done-btn:hover {
+  background: var(--green);
+  color: #fff;
+}
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-state__emoji {
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.empty-state__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.empty-state__subtitle {
+  color: var(--text-muted);
+  font-size: 14px;
+}
