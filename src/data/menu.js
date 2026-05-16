@@ -24,7 +24,7 @@ export const menu = [
     id: 'cheesy',
     name: 'Cheesy',
     tagline: 'Den som alltid fungerar',
-    ingredients: ['Dubbelsmashed', 'Cheddar', 'Senap', 'Ketchup'],
+    ingredients: [' Dubbel Cheddar', 'Senap', 'Ketchup', 'Picklad gurka'],
     color: '#e67e22',
   },
 ]
